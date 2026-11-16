@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ringgit & Harga Malaysia — Bahasa Melayu Komunikasi</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans & Lora -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            serif: ['"Lora"', 'serif'],
+          },
+          colors: {
+            kopitiam: {
+              cream: '#FAF6EE',
+              warm: '#F2E9D8',
+              teal: '#14453D',
+              tealDark: '#0D2E28',
+              hibiscus: '#C83E37',
+              turmeric: '#E29D28',
+              charcoal: '#26231F',
+              muted: '#5F5A52'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Subtle Malaysian Batik / Songket geometric SVG pattern overlay */
+    .batik-bg {
+      background-color: #14453D;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23E29D28' fill-opacity='0.09'%3E%3Cpath d='M30 0l15 15-15 15-15-15L30 0zm0 30l15 15-15 15-15-15 15-15zM0 30l15-15 15 15-15 15L0 30zm60 0L45 15 30 30l15 15 15-15z'/%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3Ccircle cx='30' cy='0' r='2'/%3E%3Ccircle cx='30' cy='60' r='2'/%3E%3Ccircle cx='0' cy='30' r='2'/%3E%3Ccircle cx='60' cy='30' r='2'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .batik-subtle {
+      background-color: #FAF6EE;
+      background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%2314453D' fill-opacity='0.03' fill-rule='evenodd'%3E%3Cpath d='M20 0l10 10-10 10-10-10L20 0zm0 20l10 10-10 10-10-10 10-10z'/%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    /* Custom Ringgit Banknote Realistic Styling */
+    .banknote-card {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .banknote-card:hover {
+      transform: translateY(-4px) scale(1.015);
+    }
+    .banknote-watermark {
+      position: absolute;
+      right: -12px;
+      bottom: -14px;
+      font-size: 5rem;
+      opacity: 0.14;
+      pointer-events: none;
+      transform: rotate(-12deg);
+    }
+
+    /* Coin metallic sheen */
+    .coin-gold {
+      background: radial-gradient(circle at 30% 30%, #FCE38A, #D4A017 75%, #9C720A);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.7), 0 4px 8px rgba(0,0,0,0.18);
+    }
+    .coin-silver {
+      background: radial-gradient(circle at 30% 30%, #F5F7FA, #B8C2CC 75%, #8795A1);
+      box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 8px rgba(0,0,0,0.16);
+    }
+
+    /* Flashcard 3D flip */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .flip-inner {
+      transition: transform 0.55s cubic-bezier(0.4, 0.2, 0.2, 1);
+      transform-style: preserve-3d;
+    }
+    .flipped .flip-inner {
+      transform: rotateY(180deg);
+    }
+    .flip-front, .flip-back {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .flip-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Hide scrollbar for clean tab row on mobile */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="batik-subtle text-kopitiam-charcoal min-h-screen flex flex-col">
+
+  <!-- Toast / Message Banner (No alert() ever) -->
+  <div id="toast-banner" class="fixed bottom-5 right-5 z-50 transform translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    <div class="bg-kopitiam-tealDark text-white px-5 py-3.5 rounded-2xl shadow-xl border border-kopitiam-turmeric/40 flex items-center gap-3">
+      <i id="toast-icon" class="fa-solid fa-volume-high text-kopitiam-turmeric text-lg"></i>
+      <span id="toast-text" class="text-sm font-medium">Sebutan dimainkan...</span>
+    </div>
+  </div>
+
+  <!-- HEADER WITH BATIK MOTIF -->
+  <header class="batik-bg text-white shadow-lg border-b-4 border-kopitiam-turmeric">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 sm:py-6">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div class="flex items-center gap-3.5">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-kopitiam-turmeric text-kopitiam-tealDark flex items-center justify-center shadow-md shrink-0">
+            <span class="font-serif font-bold text-2xl sm:text-3xl">RM</span>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold uppercase tracking-wider bg-kopitiam-hibiscus text-white px-2.5 py-0.5 rounded-full">
+                Bahasa Melayu Komunikasi
+              </span>
+              <span class="hidden sm:inline-block text-xs text-kopitiam-turmeric font-semibold">
+                • Membeli Makanan
+              </span>
+            </div>
+            <h1 class="font-serif text-2xl sm:text-3xl font-bold tracking-tight mt-1 text-kopitiam-cream">
+              Ringgit &amp; Harga Malaysia
+            </h1>
+            <p class="text-xs sm:text-sm text-stone-200">
+              Learn Malaysian currency, everyday food prices &amp; natural payment phrases
+            </p>
+          </div>
+        </div>
+
+        <!-- Quick Voice Status & Classroom Mode Pill -->
+        <div class="flex items-center gap-2.5 self-start md:self-center">
+          <button onclick="speakMalay('Selamat datang! Mari belajar tentang Ringgit Malaysia.')"
+            class="bg-white/10 hover:bg-white/20 active:scale-95 transition text-white border border-white/20 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold flex items-center gap-2">
+            <i class="fa-solid fa-volume-high text-kopitiam-turmeric"></i>
+            <span>Uji Audio (Test Voice)</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- NAVIGATION TABS -->
+      <nav class="mt-6 flex gap-2 overflow-x-auto no-scrollbar pb-1" aria-label="Modul Pembelajaran">
+        <button onclick="switchTab('kenali')" id="tab-kenali"
+          class="nav-tab active-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition flex items-center gap-2 bg-kopitiam-turmeric text-kopitiam-tealDark shadow">
+          <i class="fa-solid fa-money-bill-wave"></i>
+          <span>1. Kenali Ringgit <span class="font-normal opacity-85 hidden sm:inline">(Notes &amp; Coins)</span></span>
+        </button>
+
+        <button onclick="switchTab('kalkulator')" id="tab-kalkulator"
+          class="nav-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition flex items-center gap-2 bg-white/10 text-white hover:bg-white/20">
+          <i class="fa-solid fa-calculator"></i>
+          <span>2. Sebut Harga <span class="font-normal opacity-85 hidden sm:inline">(Price Converter)</span></span>
+        </button>
+
+        <button onclick="switchTab('simulator')" id="tab-simulator"
+          class="nav-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition flex items-center gap-2 bg-white/10 text-white hover:bg-white/20">
+          <i class="fa-solid fa-store"></i>
+          <span>3. Simulasi Kedai <span class="font-normal opacity-85 hidden sm:inline">(Mini-Game)</span></span>
+        </button>
+
+        <button onclick="switchTab('frasa')" id="tab-frasa"
+          class="nav-tab px-4 py-2.5 rounded-xl font-bold text-sm whitespace-nowrap transition flex items-center gap-2 bg-white/10 text-white hover:bg-white/20">
+          <i class="fa-solid fa-comments-dollar"></i>
+          <span>4. Frasa Wang <span class="font-normal opacity-85 hidden sm:inline">(Phrasebook)</span></span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+
+    <!-- =================================================================== -->
+    <!-- MODULE 1: KENALI RINGGIT MALAYSIA (NOTES & COINS)                   -->
+    <!-- =================================================================== -->
+    <section id="section-kenali" class="module-section space-y-8">
+      <!-- Intro Banner -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-stone-200/80 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-kopitiam-hibiscus">Modul 1 • Mata Wang Malaysia (MYR)</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-kopitiam-teal mt-1">
+            Kenali Wang Kertas &amp; Duit Syiling
+          </h2>
+          <p class="text-sm sm:text-base text-kopitiam-muted mt-1">
+            Click any <strong>banknote (wang kertas)</strong> or <strong>coin (duit syiling)</strong> below to hear its Malay pronunciation, discover Malaysian cultural icons on the back, and see what food it buys!
+          </p>
+        </div>
+        <div class="bg-kopitiam-warm px-4 py-3 rounded-xl border border-kopitiam-turmeric/30 shrink-0">
+          <p class="text-xs font-bold text-kopitiam-teal uppercase">Tip Cepat (Quick Tip)</p>
+          <p class="text-sm font-semibold text-kopitiam-charcoal mt-0.5">1 Ringgit (RM 1) = 100 Sen</p>
+          <p class="text-xs text-kopitiam-muted">Colloquial: <em>"Singgit"</em> = Satu ringgit</p>
+        </div>
+      </div>
+
+      <!-- Interactive Inspector Panel (Updates when a note/coin is clicked) -->
+      <div id="currency-inspector" class="bg-gradient-to-br from-kopitiam-teal to-kopitiam-tealDark text-white rounded-3xl p-6 sm:p-8 shadow-xl border-2 border-kopitiam-turmeric/50 transition-all">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <!-- Visual Preview -->
+          <div class="lg:col-s<!--  -->pan-5 flex flex-col items-center justify-center">
+            <div id="inspector-visual" class="w-full max-w-sm h-44 rounded-2xl p-6 flex flex-col justify-between shadow-2xl border-2 border-white/30 bg-sky-600 relative overflow-hidden">
+              <div class="flex justify-between items-start z-10">
+                <div>
+                  <span class="text-xs uppercase tracking-widest opacity-85 font-bold">Bank Negara Malaysia</span>
+                  <h3 id="inspector-code" class="text-3xl sm:text-4xl font-extrabold tracking-tight mt-0.5">RM 1</h3>
+                </div>
+                <span id="inspector-color-badge" class="text-xs font-bold px-3 py-1 rounded-full bg-white/20 backdrop-blur-sm">
+                  Biru (Blue)
+                </span>
+              </div>
+              <div class="z-10 flex items-end justify-between">
+                <p id="inspector-motif-short" class="text-sm font-semibold opacity-95">
+                  <i class="fa-solid fa-kite mr-1.5"></i>Wau Bulan
+                </p>
+                <span class="font-serif italic text-lg opacity-90">Ringgit Malaysia</span>
+              </div>
+              <i id="inspector-bg-icon" class="fa-solid fa-paper-plane banknote-watermark"></i>
+            </div>
+          </div>
+
+          <!-- Details & Cultural Context -->
+          <div class="lg:col-span-7 space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <span class="text-xs uppercase tracking-wider text-kopitiam-turmeric font-bold">Sebutan Bahasa Melayu</span>
+                <h3 id="inspector-malay" class="font-serif text-3xl sm:text-4xl font-bold text-white mt-0.5">
+                  Satu ringgit
+                </h3>
+                <p id="inspector-english" class="text-sm text-stone-300 mt-0.5">One Ringgit</p>
+              </div>
+              <button id="inspector-speak-btn" onclick="speakCurrentCurrency()"
+                class="bg-kopitiam-turmeric hover:bg-amber-400 active:scale-95 text-kopitiam-tealDark font-bold px-5 py-3 rounded-2xl shadow-lg flex items-center gap-2.5 transition">
+                <i class="fa-solid fa-volume-high text-lg"></i>
+                <span>Dengar Sebutan</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
+                <p class="text-xs font-bold uppercase tracking-wider text-kopitiam-turmeric flex items-center gap-1.5">
+                  <i class="fa-solid fa-utensils"></i> Apa Boleh Beli? (What can it buy?)
+                </p>
+                <p id="inspector-food" class="text-sm sm:text-base font-medium text-white mt-1.5 leading-relaxed">
+                  1 keping Roti Canai kosong atau 1 cucuk satay ayam di pasar malam.
+                </p>
+              </div>
+              <div class="bg-white/10 rounded-2xl p-4 border border-white/15">
+                <p class="text-xs font-bold uppercase tracking-wider text-kopitiam-turmeric flex items-center gap-1.5">
+                  <i class="fa-solid fa-landmark"></i> Simbol Budaya (Back Motif)
+                </p>
+                <p id="inspector-culture" class="text-sm sm:text-base font-medium text-white mt-1.5 leading-relaxed">
+                  Wau Bulan — Layang-layang tradisional terkenal dari negeri Kelantan.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Banknotes Grid -->
+      <div>
+        <h3 class="font-serif text-xl font-bold text-kopitiam-teal mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-money-bill-1-wave text-kopitiam-hibiscus"></i>
+          <span>Wang Kertas (Banknotes) — Klik untuk pilih</span>
+        </h3>
+        <div id="banknotes-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Coins Grid -->
+      <div>
+        <h3 class="font-serif text-xl font-bold text-kopitiam-teal mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-coins text-kopitiam-turmeric"></i>
+          <span>Duit Syiling (Sen Coins) — Klik untuk pilih</span>
+        </h3>
+        <div id="coins-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE 2: KALKULATOR HARGA & BAHASA (PRICE TO MALAY CONVERTER)      -->
+    <!-- =================================================================== -->
+    <section id="section-kalkulator" class="module-section hidden space-y-6">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-stone-200/80">
+        <span class="text-xs font-bold uppercase tracking-wider text-kopitiam-hibiscus">Modul 2 • Sebutan &amp; Pecahan Wang</span>
+        <h2 class="font-serif text-2xl sm:text-3xl font-bold text-kopitiam-teal mt-1">
+          Kalkulator Harga &amp; Bahasa
+        </h2>
+        <p class="text-sm sm:text-base text-kopitiam-muted mt-1">
+          Enter any food price in Ringgit &amp; Sen (or pick a quick meal preset) to see how Malaysians say it naturally and which notes/coins you need to pay!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left Input Panel -->
+        <div class="lg:col-span-5 bg-white rounded-3xl p-6 shadow-md border border-stone-200 space-y-6">
+          <div>
+            <label for="price-input" class="block text-sm font-bold text-kopitiam-teal uppercase tracking-wider mb-2">
+              Masukkan Harga (Enter Price in RM)
+            </label>
+            <div class="relative flex items-center">
+              <span class="absolute left-4 font-serif font-bold text-2xl text-kopitiam-teal">RM</span>
+              <input type="number" id="price-input" step="0.05" min="0.05" max="999.95" value="12.50"
+                oninput="updatePriceConverter()"
+                class="w-full pl-16 pr-4 py-4 text-3xl font-extrabold text-kopitiam-charcoal bg-kopitiam-cream border-2 border-kopitiam-teal/30 focus:border-kopitiam-teal rounded-2xl outline-none transition"
+                placeholder="0.00" />
+            </div>
+            <p class="text-xs text-kopitiam-muted mt-2">
+              <i class="fa-solid fa-circle-info text-kopitiam-turmeric mr-1"></i>
+              In Malaysia, cash totals are rounded to the nearest <strong>5 sen</strong> (Bank Negara rounding mechanism).
+            </p>
+          </div>
+
+          <!-- Quick Meal Presets -->
+          <div>
+            <p class="text-xs font-bold uppercase tracking-wider text-kopitiam-muted mb-2.5">
+              Contoh Harga Makanan (Quick Presets):
+            </p>
+            <div class="grid grid-cols-2 gap-2.5">
+              <button onclick="setPresetPrice(3.70)" class="p-3 text-left rounded-xl bg-kopitiam-warm hover:bg-kopitiam-turmeric/25 border border-stone-200 transition">
+                <span class="block font-bold text-kopitiam-teal text-base">RM 3.70</span>
+                <span class="block text-xs text-kopitiam-muted">Roti Canai &amp; Teh Tarik (Mamak)</span>
+              </button>
+              <button onclick="setPresetPrice(9.50)" class="p-3 text-left rounded-xl bg-kopitiam-warm hover:bg-kopitiam-turmeric/25 border border-stone-200 transition">
+                <span class="block font-bold text-kopitiam-teal text-base">RM 9.50</span>
+                <span class="block text-xs text-kopitiam-muted">Maggi Goreng &amp; Milo Ais (Mamak)</span>
+              </button>
+              <button onclick="setPresetPrice(8.50)" class="p-3 text-left rounded-xl bg-kopitiam-warm hover:bg-kopitiam-turmeric/25 border border-stone-200 transition">
+                <span class="block font-bold text-kopitiam-teal text-base">RM 8.50</span>
+                <span class="block text-xs text-kopitiam-muted">Nasi Lemak Ayam (Restoran)</span>
+              </button>
+              <button onclick="setPresetPrice(14.80)" class="p-3 text-left rounded-xl bg-kopitiam-warm hover:bg-kopitiam-turmeric/25 border border-stone-200 transition">
+                <span class="block font-bold text-kopitiam-teal text-base">RM 14.80</span>
+                <span class="block text-xs text-kopitiam-muted">Satay &amp; Apam Balik (Pasar Malam)</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Number Reference Mini-Cheat Sheet -->
+          <div class="bg-kopitiam-cream rounded-2xl p-4 border border-stone-200">
+            <p class="text-xs font-bold uppercase tracking-wider text-kopitiam-teal mb-2">Nombor Asas (Basic Numbers)</p>
+            <div class="grid grid-cols-3 gap-1.5 text-xs text-kopitiam-charcoal">
+              <span><strong>1:</strong> Satu</span>
+              <span><strong>2:</strong> Dua</span>
+              <span><strong>3:</strong> Tiga</span>
+              <span><strong>4:</strong> Empat</span>
+              <span><strong>5:</strong> Lima</span>
+              <span><strong>6:</strong> Enam</span>
+              <span><strong>7:</strong> Tujuh</span>
+              <span><strong>8:</strong> Lapan</span>
+              <span><strong>9:</strong> Sembilan</span>
+              <span><strong>10:</strong> Sepuluh</span>
+              <span><strong>11:</strong> Sebelas</span>
+              <span><strong>-belas:</strong> 12–19</span>
+              <span><strong>-puluh:</strong> 20–90</span>
+              <span><strong>Seratus:</strong> 100</span>
+              <span><strong>Sen:</strong> Cents</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Output Panel -->
+        <div class="lg:col-span-7 space-y-6">
+          <!-- Malay Pronunciation Result Card -->
+          <div class="bg-kopitiam-teal text-white rounded-3xl p-6 sm:p-8 shadow-lg border-b-4 border-kopitiam-turmeric">
+            <div class="flex flex-wrap items-start justify-between gap-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-kopitiam-turmeric">
+                  Cara Sebut Dalam Bahasa Melayu
+                </span>
+                <h3 id="converted-malay-text" class="font-serif text-2xl sm:text-4xl font-bold mt-2 leading-snug">
+                  Dua belas ringgit lima puluh sen
+                </h3>
+                <p id="converted-casual-text" class="text-sm text-stone-300 mt-2 italic">
+                  Natural casual at stall: "Dua belas ringgit setengah" / "Dua belas lima puluh"
+                </p>
+              </div>
+
+              <button onclick="speakConvertedPrice()"
+                class="bg-kopitiam-hibiscus hover:bg-red-600 active:scale-95 text-white font-bold px-5 py-3.5 rounded-2xl shadow-lg flex items-center gap-2.5 transition shrink-0">
+                <i class="fa-solid fa-volume-high text-lg"></i>
+                <span>Dengar Sebutan</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Visual Cash Breakdown -->
+          <div class="bg-white rounded-3xl p-6 shadow-md border border-stone-200">
+            <div class="flex items-center justify-between mb-4">
+              <div>
+                <h4 class="font-serif text-xl font-bold text-kopitiam-teal">
+                  Pecahan Wang Tunai (Exact Cash Breakdown)
+                </h4>
+                <p class="text-xs sm:text-sm text-kopitiam-muted">
+                  Minimum notes and coins needed to pay <strong id="breakdown-amount-label">RM 12.50</strong>:
+                </p>
+              </div>
+              <span id="total-pieces-badge" class="text-xs font-bold bg-kopitiam-warm text-kopitiam-teal px-3 py-1.5 rounded-full">
+                3 keping/syiling
+              </span>
+            </div>
+
+            <div id="cash-breakdown-visual" class="flex flex-wrap gap-3 items-center min-h-[110px] p-4 bg-kopitiam-cream rounded-2xl border border-dashed border-stone-300">
+              <!-- Populated dynamically by JS -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE 3: KEDAI & PASAR MALAM SIMULATOR (MINI-GAME)                 -->
+    <!-- =================================================================== -->
+    <section id="section-simulator" class="module-section hidden space-y-6">
+      <!-- Top Bar with Setting Selector & Score -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-stone-200 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-kopitiam-hibiscus">Modul 3 • Latihan Interaktif</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-kopitiam-teal mt-1">
+            Simulasi Membeli &amp; Bayar
+          </h2>
+          <p class="text-sm text-kopitiam-muted mt-0.5">
+            Choose a Malaysian dining spot, calculate the bill, and pay or check your change!
+          </p>
+        </div>
+
+        <!-- Score & Streak Counters -->
+        <div class="flex items-center gap-3 self-start lg:self-center">
+          <div class="bg-kopitiam-warm px-4 py-2.5 rounded-2xl border border-kopitiam-turmeric/40 text-center">
+            <span class="block text-[11px] font-bold uppercase text-kopitiam-muted">Markah (Score)</span>
+            <span id="sim-score" class="text-xl font-extrabold text-kopitiam-teal">0</span>
+          </div>
+          <div class="bg-kopitiam-warm px-4 py-2.5 rounded-2xl border border-kopitiam-turmeric/40 text-center">
+            <span class="block text-[11px] font-bold uppercase text-kopitiam-muted">Rentetan (Streak)</span>
+            <span id="sim-streak" class="text-xl font-extrabold text-kopitiam-hibiscus">0 🔥</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Venue Selector Pills -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <button onclick="setSimulatorVenue('kafe')" id="venue-btn-kafe"
+          class="venue-btn p-4 rounded-2xl border-2 border-kopitiam-teal bg-kopitiam-teal text-white font-bold text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 shadow transition">
+          <i class="fa-solid fa-mug-hot text-kopitiam-turmeric text-lg"></i>
+          <span>Kafe Kampus</span>
+        </button>
+        <button onclick="setSimulatorVenue('mamak')" id="venue-btn-mamak"
+          class="venue-btn p-4 rounded-2xl border-2 border-stone-200 bg-white text-kopitiam-charcoal hover:border-kopitiam-teal/50 font-bold text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-fire-burner text-kopitiam-hibiscus text-lg"></i>
+          <span>Restoran Mamak</span>
+        </button>
+        <button onclick="setSimulatorVenue('restoran')" id="venue-btn-restoran"
+          class="venue-btn p-4 rounded-2xl border-2 border-stone-200 bg-white text-kopitiam-charcoal hover:border-kopitiam-teal/50 font-bold text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-utensils text-kopitiam-teal text-lg"></i>
+          <span>Restoran</span>
+        </button>
+        <button onclick="setSimulatorVenue('pasar')" id="venue-btn-pasar"
+          class="venue-btn p-4 rounded-2xl border-2 border-stone-200 bg-white text-kopitiam-charcoal hover:border-kopitiam-teal/50 font-bold text-sm sm:text-base flex flex-col sm:flex-row items-center justify-center gap-2 transition">
+          <i class="fa-solid fa-store text-kopitiam-turmeric text-lg"></i>
+          <span>Pasar Malam</span>
+        </button>
+      </div>
+
+      <!-- Active Game Stage -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: Scenario Dialogue & Menu Receipt -->
+        <div class="lg:col-span-6 bg-white rounded-3xl p-6 shadow-md border border-stone-200 flex flex-col justify-between space-y-5">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span id="sim-venue-badge" class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-kopitiam-teal/10 text-kopitiam-teal">
+                Suasana: Kafe Kampus
+              </span>
+              <button onclick="toggleEnglishHint()" class="text-xs font-bold text-kopitiam-hibiscus hover:underline flex items-center gap-1">
+                <i class="fa-solid fa-language"></i>
+                <span id="hint-toggle-label">Tunjuk Terjemahan (English Hint)</span>
+              </button>
+            </div>
+
+            <!-- Vendor Speech Bubble -->
+            <div class="bg-kopitiam-warm rounded-2xl p-4 sm:p-5 border-l-4 border-kopitiam-turmeric relative">
+              <div class="flex items-start justify-between gap-3">
+                <div>
+                  <p id="sim-vendor-role" class="text-xs font-bold text-kopitiam-teal uppercase">Barista Kafe:</p>
+                  <p id="sim-dialogue-ms" class="text-base sm:text-lg font-bold text-kopitiam-charcoal mt-1">
+                    "Selamat pagi! Awak pesan satu Kopi Ais dan satu Karipap. Semua sekali berapa ya?"
+                  </p>
+                  <p id="sim-dialogue-en" class="hidden text-sm text-kopitiam-muted mt-2 pt-2 border-t border-stone-300/70 italic">
+                    "Good morning! You ordered one Iced Coffee and one Curry Puff. How much is everything?"
+                  </p>
+                </div>
+                <button onclick="speakSimulatorDialogue()" title="Dengar dialog"
+                  class="w-10 h-10 rounded-xl bg-kopitiam-teal text-white hover:bg-kopitiam-tealDark flex items-center justify-center shrink-0 transition">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Itemized Order Card -->
+            <div class="bg-kopitiam-cream rounded-2xl p-4 border border-stone-200">
+              <p class="text-xs font-bold uppercase tracking-wider text-kopitiam-muted mb-3">
+                Senarai Pesanan (Your Order):
+              </p>
+              <div id="sim-order-items" class="space-y-2.5">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <button onclick="generateSimulatorRound()"
+            class="w-full py-3 rounded-xl border-2 border-kopitiam-teal text-kopitiam-teal hover:bg-kopitiam-teal hover:text-white font-bold text-sm transition flex items-center justify-center gap-2">
+            <i class="fa-solid fa-rotate-right"></i>
+            <span>Soalan Baru (Next Customer Scenario)</span>
+          </button>
+        </div>
+
+        <!-- Right: Two-Step Interactive Challenge -->
+        <div class="lg:col-span-6 bg-white rounded-3xl p-6 shadow-md border border-stone-200 space-y-6">
+          <!-- STEP 1: Calculate Total -->
+          <div id="sim-step-1" class="space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-full bg-kopitiam-teal text-white font-bold text-sm flex items-center justify-center">1</span>
+              <h3 class="font-serif text-lg font-bold text-kopitiam-teal">
+                Berapa jumlah semuanya? (Calculate Total)
+              </h3>
+            </div>
+            <div class="flex gap-2.5">
+              <div class="relative flex-grow">
+                <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-kopitiam-teal">RM</span>
+                <input type="number" id="sim-total-input" step="0.10" placeholder="0.00"
+                  class="w-full pl-12 pr-4 py-3 text-xl font-bold bg-kopitiam-cream border-2 border-stone-300 focus:border-kopitiam-teal rounded-xl outline-none" />
+              </div>
+              <button onclick="checkStep1Total()"
+                class="bg-kopitiam-teal hover:bg-kopitiam-tealDark text-white font-bold px-6 py-3 rounded-xl transition shrink-0">
+                Semak (Check)
+              </button>
+            </div>
+            <div id="sim-step1-feedback" class="hidden text-sm font-semibold p-3 rounded-xl"></div>
+          </div>
+
+          <hr class="border-stone-200" />
+
+          <!-- STEP 2: Payment / Change Challenge -->
+          <div id="sim-step-2" class="space-y-4 opacity-50 pointer-events-none transition-opacity">
+            <div class="flex items-center gap-2">
+              <span class="w-7 h-7 rounded-full bg-kopitiam-hibiscus text-white font-bold text-sm flex items-center justify-center">2</span>
+              <h3 id="sim-step2-title" class="font-serif text-lg font-bold text-kopitiam-charcoal">
+                Bayar dengan Wang Tunai (Pay Exact Amount)
+              </h3>
+            </div>
+
+            <p id="sim-step2-instruction" class="text-sm text-kopitiam-muted">
+              Click the Ringgit notes and coins below to build the exact payment!
+            </p>
+
+            <!-- Mode A: Clickable Wallet to Pay Exact Amount -->
+            <div id="sim-wallet-mode" class="space-y-3">
+              <div class="flex items-center justify-between bg-kopitiam-warm px-4 py-3 rounded-xl border border-kopitiam-turmeric/40">
+                <span class="text-xs font-bold uppercase text-kopitiam-muted">Wang Dipilih (Selected):</span>
+                <div class="flex items-center gap-3">
+                  <span id="sim-selected-cash" class="text-xl font-extrabold text-kopitiam-teal">RM 0.00</span>
+                  <button onclick="resetSelectedCash()" class="text-xs font-bold text-kopitiam-hibiscus hover:underline">
+                    Reset
+                  </button>
+                </div>
+              </div>
+
+              <!-- Clickable Denominations -->
+              <div class="grid grid-cols-4 sm:grid-cols-4 gap-2">
+                <button onclick="addSimCash(10)" class="py-2.5 px-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-sm active:scale-95 transition">+ RM10</button>
+                <button onclick="addSimCash(5)" class="py-2.5 px-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm shadow-sm active:scale-95 transition">+ RM5</button>
+                <button onclick="addSimCash(1)" class="py-2.5 px-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm shadow-sm active:scale-95 transition">+ RM1</button>
+                <button onclick="addSimCash(0.50)" class="py-2.5 px-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-kopitiam-charcoal font-bold text-sm shadow-sm active:scale-95 transition">+ 50 sen</button>
+                <button onclick="addSimCash(0.20)" class="py-2.5 px-2 rounded-xl bg-amber-400 hover:bg-amber-500 text-kopitiam-charcoal font-bold text-sm shadow-sm active:scale-95 transition">+ 20 sen</button>
+                <button onclick="addSimCash(0.10)" class="py-2.5 px-2 rounded-xl bg-slate-300 hover:bg-slate-400 text-kopitiam-charcoal font-bold text-sm shadow-sm active:scale-95 transition">+ 10 sen</button>
+                <button onclick="addSimCash(0.05)" class="py-2.5 px-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-kopitiam-charcoal font-bold text-sm shadow-sm active:scale-95 transition">+ 5 sen</button>
+                <button onclick="checkStep2Payment()" class="py-2.5 px-2 rounded-xl bg-kopitiam-hibiscus hover:bg-red-700 text-white font-bold text-sm shadow active:scale-95 transition">
+                  Bayar!
+                </button>
+              </div>
+            </div>
+
+            <!-- Mode B: Calculate Change (Baki) when paying with RM20 / RM50 -->
+            <div id="sim-change-mode" class="hidden space-y-3">
+              <div class="bg-kopitiam-warm p-3.5 rounded-xl border border-kopitiam-turmeric/40 text-sm">
+                <p class="font-bold text-kopitiam-charcoal">
+                  Anda bayar dengan wang kertas <span id="sim-paid-note-label" class="text-kopitiam-hibiscus font-extrabold">RM 20.00</span>.
+                </p>
+                <p class="text-kopitiam-muted text-xs mt-0.5">Berapa baki wang anda? (How much is your change?)</p>
+              </div>
+              <div class="flex gap-2.5">
+                <div class="relative flex-grow">
+                  <span class="absolute left-3.5 top-1/2 -translate-y-1/2 font-bold text-kopitiam-teal">RM</span>
+                  <input type="number" id="sim-change-input" step="0.05" placeholder="0.00"
+                    class="w-full pl-12 pr-4 py-3 text-xl font-bold bg-kopitiam-cream border-2 border-stone-300 focus:border-kopitiam-teal rounded-xl outline-none" />
+                </div>
+                <button onclick="checkStep2Change()"
+                  class="bg-kopitiam-hibiscus hover:bg-red-700 text-white font-bold px-6 py-3 rounded-xl transition shrink-0">
+                  Semak Baki
+                </button>
+              </div>
+            </div>
+
+            <div id="sim-step2-feedback" class="hidden text-sm font-semibold p-3.5 rounded-xl"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- MODULE 4: FRASA PENTING WANG & HARGA (SURVIVAL PHRASEBOOK)          -->
+    <!-- =================================================================== -->
+    <section id="section-frasa" class="module-section hidden space-y-6">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 shadow-sm border border-stone-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-kopitiam-hibiscus">Modul 4 • Kad Imbas Komunikasi</span>
+          <h2 class="font-serif text-2xl sm:text-3xl font-bold text-kopitiam-teal mt-1">
+            Frasa Penting Wang &amp; Harga
+          </h2>
+          <p class="text-sm sm:text-base text-kopitiam-muted mt-1">
+            Click any card to flip between natural Bahasa Melayu and English context, or tap the speaker button to practice pronunciation!
+          </p>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="flex flex-wrap gap-2">
+          <button onclick="filterPhrases('all')" class="phrase-filter-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-kopitiam-teal text-white">Semua</button>
+          <button onclick="filterPhrases('harga')" class="phrase-filter-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-kopitiam-warm text-kopitiam-charcoal hover:bg-stone-200">Tanya Harga</button>
+          <button onclick="filterPhrases('tawar')" class="phrase-filter-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-kopitiam-warm text-kopitiam-charcoal hover:bg-stone-200">Tawar-menawar</button>
+          <button onclick="filterPhrases('bayar')" class="phrase-filter-btn px-3.5 py-2 rounded-xl text-xs font-bold bg-kopitiam-warm text-kopitiam-charcoal hover:bg-stone-200">Cara Bayar</button>
+        </div>
+      </div>
+
+      <!-- Flashcards Grid -->
+      <div id="phrasebook-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-kopitiam-tealDark text-stone-300 py-5 px-4 mt-10 border-t border-kopitiam-turmeric/30">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs">
+      <p class="font-semibold text-kopitiam-cream">
+        Bahasa Melayu Komunikasi • Topik: Membeli Makanan &amp; Mata Wang Ringgit (RM)
+      </p>
+      <p class="text-stone-400">
+        Direka untuk pelajar antarabangsa di Malaysia 🇲🇾
+      </p>
+    </div>
+  </footer>
+
+  <!-- APPLICATION LOGIC -->
+  <script>
+    // =========================================================================
+    // 1. DATA REPOSITORY (Malaysian Currency, Menu Items, Phrases)
+    // =========================================================================
+    const CURRENCY_DATA = [
+      {
+        id: 'rm1',
+        type: 'note',
+        value: 1,
+        code: 'RM 1',
+        malay: 'Satu ringgit',
+        english: 'One Ringgit (Colloquial: "Singgit")',
+        colorName: 'Biru (Blue)',
+        bgClass: 'bg-sky-600',
+        borderClass: 'border-sky-400',
+        icon: 'fa-paper-plane',
+        motifShort: 'Wau Bulan',
+        food: '1 keping Roti Canai kosong, 1 cucuk satay ayam, atau 1 gelas air sirap di pasar malam.',
+        culture: 'Wau Bulan — Layang-layang tradisional terkenal dari negeri Kelantan (Traditional moon-kite).'
+      },
+      {
+        id: 'rm5',
+        type: 'note',
+        value: 5,
+        code: 'RM 5',
+        malay: 'Lima ringgit',
+        english: 'Five Ringgit',
+        colorName: 'Hijau (Green)',
+        bgClass: 'bg-emerald-600',
+        borderClass: 'border-emerald-400',
+        icon: 'fa-feather-pointed',
+        motifShort: 'Burung Enggang',
+        food: '2 keping Roti Canai Kosong + 1 Teh Tarik di kedai Mamak, atau Nasi Lemak bungkus.',
+        culture: 'Burung Enggang Badak (Rhinoceros Hornbill) — Burung rasmi negeri Sarawak, Bumi Kenyalang.'
+      },
+      {
+        id: 'rm10',
+        type: 'note',
+        value: 10,
+        code: 'RM 10',
+        malay: 'Sepuluh ringgit',
+        english: 'Ten Ringgit',
+        colorName: 'Merah (Red)',
+        bgClass: 'bg-rose-600',
+        borderClass: 'border-rose-400',
+        icon: 'fa-spa',
+        motifShort: 'Bunga Rafflesia',
+        food: 'Maggi Goreng Ayam dan Teh O Ais Limau di Restoran Mamak, atau Nasi Goreng Ayam.',
+        culture: 'Bunga Rafflesia — Bunga terbesar di dunia yang tumbuh di hutan hujan Sabah dan Sarawak.'
+      },
+      {
+        id: 'rm20',
+        type: 'note',
+        value: 20,
+        code: 'RM 20',
+        malay: 'Dua puluh ringgit',
+        english: 'Twenty Ringgit',
+        colorName: 'Jingga (Orange)',
+        bgClass: 'bg-amber-600',
+        borderClass: 'border-amber-400',
+        icon: 'fa-water',
+        motifShort: 'Penyu Karah & Belimbing',
+        food: 'Makan tengah hari untuk 2 orang di restoran, atau pelbagai juadah di Pasar Malam.',
+        culture: 'Penyu Karah & Penyu Belimbing — Hidupan laut ikonik di pantai Terengganu.'
+      },
+      {
+        id: 'rm50',
+        type: 'note',
+        value: 50,
+        code: 'RM 50',
+        malay: 'Lima puluh ringgit',
+        english: 'Fifty Ringgit',
+        colorName: 'Biru Kehijauan (Teal)',
+        bgClass: 'bg-teal-700',
+        borderClass: 'border-teal-400',
+        icon: 'fa-seedling',
+        motifShort: 'Kelapa Sawit & Bapa Kemerdekaan',
+        food: 'Makan malam berkumpulan (3–4 orang) di kafe atau membeli barang dapur mingguan.',
+        culture: 'Tunku Abdul Rahman (Bapa Kemerdekaan) & Kelapa Sawit — Melambangkan kemerdekaan dan kemajuan ekonomi Malaysia.'
+      },
+      {
+        id: 'rm100',
+        type: 'note',
+        value: 100,
+        code: 'RM 100',
+        malay: 'Seratus ringgit',
+        english: 'One Hundred Ringgit',
+        colorName: 'Ungu (Purple)',
+        bgClass: 'bg-purple-700',
+        borderClass: 'border-purple-400',
+        icon: 'fa-mountain',
+        motifShort: 'Gunung Kinabalu',
+        food: 'Jamuan makan malam besar bersama kawan-kawan (Penjual pasar malam mungkin tiada baki kecil!).',
+        culture: 'Gunung Kinabalu & Lembah Gunung Api — Puncak tertinggi di Malaysia yang terletak di Sabah.'
+      },
+      // COINS
+      {
+        id: 'sen5',
+        type: 'coin',
+        value: 0.05,
+        code: '5 sen',
+        malay: 'Lima sen',
+        english: 'Five Sen (Silver coin)',
+        colorName: 'Perak (Silver)',
+        bgClass: 'bg-slate-600',
+        coinClass: 'coin-silver text-slate-800',
+        icon: 'fa-coins',
+        motifShort: 'Motif Destar Siga',
+        food: 'Digunakan untuk penggenapan harga tunai (cash rounding) di kaunter bayaran.',
+        culture: 'Destar Siga — Tenunan kain tradisional masyarakat Kadazandusun di Sabah.'
+      },
+      {
+        id: 'sen10',
+        type: 'coin',
+        value: 0.10,
+        code: '10 sen',
+        malay: 'Sepuluh sen',
+        english: 'Ten Sen (Silver coin)',
+        colorName: 'Perak (Silver)',
+        bgClass: 'bg-slate-600',
+        coinClass: 'coin-silver text-slate-800',
+        icon: 'fa-coins',
+        motifShort: 'Corak Orang Asli',
+        food: 'Baki syiling biasa apabila membeli air atau kuih-muih.',
+        culture: 'Anyaman Orang Asli — Seni anyaman daun tradisional suku kaum Mah Meri.'
+      },
+      {
+        id: 'sen20',
+        type: 'coin',
+        value: 0.20,
+        code: '20 sen',
+        malay: 'Dua puluh sen',
+        english: 'Twenty Sen (Gold coin)',
+        colorName: 'Emas (Gold)',
+        bgClass: 'bg-amber-600',
+        coinClass: 'coin-gold text-amber-950',
+        icon: 'fa-coins',
+        motifShort: 'Bunga Melur',
+        food: 'Syiling berwarna emas kecil — mudah dibezakan daripada syiling 10 sen!',
+        culture: 'Bunga Melur (Jasmine) — Bunga wangi yang melambangkan kesucian dalam budaya tempatan.'
+      },
+      {
+        id: 'sen50',
+        type: 'coin',
+        value: 0.50,
+        code: '50 sen',
+        malay: 'Lima puluh sen',
+        english: 'Fifty Sen (Gold coin)',
+        colorName: 'Emas (Gold)',
+        bgClass: 'bg-amber-600',
+        coinClass: 'coin-gold text-amber-950',
+        icon: 'fa-coins',
+        motifShort: 'Sulur Kacang',
+        food: '2 keping syiling 50 sen = RM 1.00 (Satu ringgit).',
+        culture: 'Sulur Kacang — Motif ukiran kayu tradisional Melayu yang halus dan berseni.'
+      }
+    ];
+
+    const VENUE_SCENARIOS = {
+      kafe: [
+        {
+          role: 'Barista Kafe',
+          dialogueMs: 'Selamat pagi! Awak pesan satu Kopi Latte dan satu Kek Batik. Semua sekali berapa ya?',
+          dialogueEn: 'Good morning! You ordered one Coffee Latte and one Batik Cake. How much is everything?',
+          items: [
+            { name: 'Kopi Latte Panas (Hot Latte)', qty: 1, price: 6.50 },
+            { name: 'Kek Batik Coklat (Batik Cake)', qty: 1, price: 4.50 }
+          ],
+          mode: 'exact'
+        },
+        {
+          role: 'Juruwang Kafe',
+          dialogueMs: 'Makan sini ya! Sandwich Ayam satu dan Teh Hijau Ais satu. Boleh kira jumlahnya?',
+          dialogueEn: 'Dine in! One Chicken Sandwich and one Iced Green Tea. Can you calculate the total?',
+          items: [
+            { name: 'Sandwich Ayam (Chicken Sandwich)', qty: 1, price: 7.50 },
+            { name: 'Teh Hijau Ais (Iced Green Tea)', qty: 1, price: 4.50 }
+          ],
+          mode: 'change',
+          paidNote: 20
+        },
+        {
+          role: 'Pelayan Kafe',
+          dialogueMs: 'Ini pesanannya: Roti Bakar dua set dan Kopi Ais satu. Semuanya berapa ringgit?',
+          dialogueEn: 'Here is your order: two sets of Toast and one Iced Coffee. How many ringgit in total?',
+          items: [
+            { name: 'Roti Bakar Kaya & Mentega', qty: 2, price: 3.50 },
+            { name: 'Kopi Ais (Iced Coffee)', qty: 1, price: 4.00 }
+          ],
+          mode: 'exact'
+        }
+      ],
+      mamak: [
+        {
+          role: 'Ane / Pelayan Mamak',
+          dialogueMs: 'Boss, kira! Roti Canai Kosong dua keping, Roti Telur satu, dan Teh Tarik kurang manis satu. Makan sini ya!',
+          dialogueEn: 'Boss, calculate the bill! Two plain Roti Canai, one Egg Roti, and one less-sweet Teh Tarik. Dine in!',
+          items: [
+            { name: 'Roti Canai Kosong', qty: 2, price: 1.50 },
+            { name: 'Roti Telur', qty: 1, price: 2.80 },
+            { name: 'Teh Tarik Kurang Manis', qty: 1, price: 2.20 }
+          ],
+          mode: 'exact'
+        },
+        {
+          role: 'Juruwang Mamak',
+          dialogueMs: 'Makan sini atau bungkus? Maggi Goreng Ayam satu, Tosai Masala satu, dan Milo Ais satu. Semua sekali berapa?',
+          dialogueEn: 'Dine in or takeaway? One Maggi Goreng with Chicken, one Masala Tosai, and one Iced Milo. How much in total?',
+          items: [
+            { name: 'Maggi Goreng Ayam', qty: 1, price: 8.50 },
+            { name: 'Tosai Masala', qty: 1, price: 3.50 },
+            { name: 'Milo Ais', qty: 1, price: 3.00 }
+          ],
+          mode: 'change',
+          paidNote: 20
+        },
+        {
+          role: 'Ane / Pelayan Mamak',
+          dialogueMs: 'Bungkus semua ya, boss! Roti Canai Kosong tiga keping dan Teh Tarik dua bungkus. Berapa semua sekali?',
+          dialogueEn: 'Takeaway all of them, boss! Three plain Roti Canai and two packets of Teh Tarik. How much is everything?',
+          items: [
+            { name: 'Roti Canai Kosong (Bungkus)', qty: 3, price: 1.50 },
+            { name: 'Teh Tarik (Bungkus)', qty: 2, price: 2.20 }
+          ],
+          mode: 'exact'
+        }
+      ],
+      restoran: [
+        {
+          role: 'Pelayan Restoran',
+          dialogueMs: 'Selamat tengah hari! Nasi Campur dengan Ayam Goreng Berempah, Sayur Campur, dan Teh O Ais Limau.',
+          dialogueEn: 'Good afternoon! Mixed Rice with Spiced Fried Chicken, Mixed Vegetables, and Iced Lime Tea.',
+          items: [
+            { name: 'Nasi Putih & Ayam Goreng Berempah', qty: 1, price: 7.50 },
+            { name: 'Sayur Campur (Mixed Vegetables)', qty: 1, price: 2.00 },
+            { name: 'Teh O Ais Limau (Iced Lime Tea)', qty: 1, price: 2.50 }
+          ],
+          mode: 'change',
+          paidNote: 20
+        },
+        {
+          role: 'Juruwang Restoran',
+          dialogueMs: 'Meja nombor empat: Nasi Lemak Ayam dua pinggan dan Air Kosong dua gelas.',
+          dialogueEn: 'Table number four: two plates of Nasi Lemak Chicken and two glasses of plain water.',
+          items: [
+            { name: 'Nasi Lemak Ayam', qty: 2, price: 8.50 },
+            { name: 'Air Kosong (Plain Water)', qty: 2, price: 0.50 }
+          ],
+          mode: 'exact'
+        },
+        {
+          role: 'Pelayan Restoran',
+          dialogueMs: 'Nasi Goreng Kampung kurang pedas satu dan Jus Tembikai satu. Semua sekali berapa?',
+          dialogueEn: 'One less-spicy Kampung Fried Rice and one Watermelon Juice. How much is everything?',
+          items: [
+            { name: 'Nasi Goreng Kampung', qty: 1, price: 8.00 },
+            { name: 'Jus Tembikai (Watermelon Juice)', qty: 1, price: 4.50 }
+          ],
+          mode: 'change',
+          paidNote: 50
+        }
+      ],
+      pasar: [
+        {
+          role: 'Penjual Satay',
+          dialogueMs: 'Satay ayam sepuluh cucuk dan nasi impit dua! Kira dulu ya, dik.',
+          dialogueEn: 'Ten skewers of chicken satay and two pressed rice cakes! Calculate first, friend.',
+          items: [
+            { name: 'Satay Ayam (10 cucuk @ RM1.20)', qty: 10, price: 1.20 },
+            { name: 'Nasi Impit', qty: 2, price: 1.50 }
+          ],
+          mode: 'change',
+          paidNote: 20
+        },
+        {
+          role: 'Penjual Air & Kuih',
+          dialogueMs: 'Air Katira dua bungkus dan Apam Balik rangup dua keping! Panas-panas lagi ni.',
+          dialogueEn: 'Two packs of Air Katira and two crispy Apam Balik pancakes! Fresh and hot.',
+          items: [
+            { name: 'Air Katira (Bungkus)', qty: 2, price: 4.00 },
+            { name: 'Apam Balik Rangup', qty: 2, price: 2.00 }
+          ],
+          mode: 'exact'
+        },
+        {
+          role: 'Penjual Char Kuey Teow',
+          dialogueMs: 'Char Kuey Teow Udang satu dan Keropok Lekor satu bungkus. Bungkus semua ya!',
+          dialogueEn: 'One Prawn Char Kuey Teow and one pack of Keropok Lekor. Packing all of them!',
+          items: [
+            { name: 'Char Kuey Teow Udang', qty: 1, price: 7.50 },
+            { name: 'Keropok Lekor (1 Bungkus)', qty: 1, price: 4.00 }
+          ],
+          mode: 'exact'
+        }
+      ]
+    };
+
+    const PHRASEBOOK_DATA = [
+      {
+        category: 'harga',
+        tag: 'Tanya Harga (Mamak)',
+        malay: 'Berapa harganya?',
+        natural: 'Boss, kira! Semua sekali berapa?',
+        english: 'Boss, calculate the bill! How much is everything?',
+        tip: 'At a Mamak restaurant, calling "Boss, kira!" politely gets the waiter to come and total your meal at the table!'
+      },
+      {
+        category: 'harga',
+        tag: 'Tanya Harga',
+        malay: 'Satu pinggan berapa ringgit?',
+        natural: 'Secucuk / sebungkus berapa?',
+        english: 'How many ringgit for one plate / skewer / packet?',
+        tip: 'Useful at Pasar Malam stalls where prices are per piece or packet.'
+      },
+      {
+        category: 'bayar',
+        tag: 'Cara Pesan & Bayar',
+        malay: 'Makan di sini atau bawa pulang?',
+        natural: 'Makan sini atau bungkus?',
+        english: 'Dine in or takeaway? ("Bungkus" = packet/takeaway)',
+        tip: 'You will hear "Makan sini atau bungkus?" at every Mamak, cafe, and restaurant in Malaysia!'
+      },
+      {
+        category: 'tawar',
+        tag: 'Tawar-menawar',
+        malay: 'Boleh kurang sikit?',
+        natural: 'Boleh bagi diskaun sikit, bang?',
+        english: 'Can you lower the price a little? (Can you give a small discount?)',
+        tip: 'Appropriate at Pasar Malam or markets, NOT in fixed-price cafes or Mamak restaurants.'
+      },
+      {
+        category: 'tawar',
+        tag: 'Tawar-menawar',
+        malay: 'Mahal sangatlah!',
+        natural: 'Alamak, mahal sikit. Kalau RM10 boleh?',
+        english: 'Oh dear, a bit pricey. Is RM10 okay?',
+        tip: 'Smile when bargaining — Malaysians respond warmly to humor and politeness.'
+      },
+      {
+        category: 'bayar',
+        tag: 'Cara Bayar',
+        malay: 'Boleh bayar guna QR atau kad?',
+        natural: 'Sini terima DuitNow QR tak?',
+        english: 'Can I pay using QR or card? / Do you accept DuitNow QR?',
+        tip: 'DuitNow QR is used almost everywhere in Malaysia, even at Mamak counters and Pasar Malam!'
+      },
+      {
+        category: 'bayar',
+        tag: 'Cara Bayar',
+        malay: 'Maaf, saya tak ada duit kecil.',
+        natural: 'Maaf kak, ada duit besar saja (RM50).',
+        english: 'Sorry, I do not have small change. I only have a large note.',
+        tip: 'Always apologize politely if paying with RM50 or RM100 for a cheap meal.'
+      },
+      {
+        category: 'bayar',
+        tag: 'Cara Bayar',
+        malay: 'Ini duitnya. Simpan baki.',
+        natural: 'Nah duitnya. Baki simpan sajalah.',
+        english: 'Here is the money. Keep the change.',
+        tip: 'A kind gesture when the remaining change is 10 or 20 sen.'
+      },
+      {
+        category: 'bayar',
+        tag: 'Cara Bayar',
+        malay: 'Baki saya berapa?',
+        natural: 'Tunggu baki sekejap ya.',
+        english: 'How much is my change? / Waiting a moment for my change.',
+        tip: '"Baki" means balance or change in Bahasa Melayu.'
+      }
+    ];
+
+    // =========================================================================
+    // 2. SPEECH SYNTHESIS (MALAY AUDIO PRONUNCIATION)
+    // =========================================================================
+    let selectedCurrencyObj = CURRENCY_DATA[0];
+
+    function showToast(message) {
+      const banner = document.getElementById('toast-banner');
+      const text = document.getElementById('toast-text');
+      text.textContent = message;
+      banner.classList.remove('translate-y-24', 'opacity-0');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        banner.classList.add('translate-y-24', 'opacity-0');
+      }, 2600);
+    }
+
+    function speakMalay(text) {
+      if (!('speechSynthesis' in window)) {
+        showToast('Sebutan: "' + text + '"');
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      const voices = window.speechSynthesis.getVoices();
+      // Prefer ms-MY, fallback to id-ID (very close phonetically), then default
+      const malayVoice = voices.find(v => v.lang.toLowerCase().includes('ms')) ||
+                         voices.find(v => v.lang.toLowerCase().includes('id'));
+      if (malayVoice) {
+        utterance.voice = malayVoice;
+      }
+      utterance.lang = 'ms-MY';
+      utterance.rate = 0.92; // Slightly slower for clear student comprehension
+      window.speechSynthesis.speak(utterance);
+      showToast('🔊 "' + text + '"');
+    }
+
+    // Ensure voices are loaded in Chrome/Safari
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
+
+    // =========================================================================
+    // 3. TAB NAVIGATION
+    // =========================================================================
+    function switchTab(tabId) {
+      document.querySelectorAll('.module-section').forEach(sec => sec.classList.add('hidden'));
+      document.getElementById('section-' + tabId).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-tab').forEach(btn => {
+        btn.classList.remove('bg-kopitiam-turmeric', 'text-kopitiam-tealDark', 'shadow');
+        btn.classList.add('bg-white/10', 'text-white');
+      });
+
+      const activeBtn = document.getElementById('tab-' + tabId);
+      activeBtn.classList.remove('bg-white/10', 'text-white');
+      activeBtn.classList.add('bg-kopitiam-turmeric', 'text-kopitiam-tealDark', 'shadow');
+    }
+
+    // =========================================================================
+    // 4. MODULE 1: KENALI RINGGIT RENDER & INTERACTION
+    // =========================================================================
+    function renderCurrencyGrids() {
+      const notesGrid = document.getElementById('banknotes-grid');
+      const coinsGrid = document.getElementById('coins-grid');
+
+      notesGrid.innerHTML = '';
+      coinsGrid.innerHTML = '';
+
+      CURRENCY_DATA.forEach(item => {
+        if (item.type === 'note') {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.onclick = () => selectCurrencyItem(item.id);
+          card.className = `banknote-card text-left rounded-2xl p-5 text-white shadow-md border-2 ${item.borderClass} ${item.bgClass} flex flex-col justify-between h-36 focus:outline-none focus:ring-4 focus:ring-kopitiam-turmeric`;
+          card.innerHTML = `
+            <div class="flex justify-between items-start z-10">
+              <span class="text-2xl font-extrabold tracking-tight">${item.code}</span>
+              <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-black/20">${item.colorName}</span>
+            </div>
+            <div class="z-10">
+              <p class="font-serif text-lg font-bold">${item.malay}</p>
+              <p class="text-xs opacity-90 mt-0.5"><i class="fa-solid ${item.icon} mr-1"></i> ${item.motifShort}</p>
+            </div>
+            <i class="fa-solid ${item.icon} banknote-watermark"></i>
+          `;
+          notesGrid.appendChild(card);
+        } else {
+          const coinBtn = document.createElement('button');
+          coinBtn.type = 'button';
+          coinBtn.onclick = () => selectCurrencyItem(item.id);
+          coinBtn.className = `bg-white hover:bg-kopitiam-warm rounded-2xl p-4 shadow-sm border border-stone-200 flex flex-col items-center text-center transition hover:-translate-y-1 focus:outline-none focus:ring-4 focus:ring-kopitiam-turmeric`;
+          coinBtn.innerHTML = `
+            <div class="w-16 h-16 rounded-full ${item.coinClass} flex items-center justify-center font-extrabold text-base mb-2.5 border-2 border-white/60">
+              ${item.code}
+            </div>
+            <p class="font-serif font-bold text-kopitiam-teal text-base">${item.malay}</p>
+            <p class="text-xs text-kopitiam-muted mt-0.5">${item.colorName}</p>
+          `;
+          coinsGrid.appendChild(coinBtn);
+        }
+      });
+    }
+
+    function selectCurrencyItem(id) {
+      const item = CURRENCY_DATA.find(c => c.id === id);
+      if (!item) return;
+      selectedCurrencyObj = item;
+
+      document.getElementById('inspector-code').textContent = item.code;
+      document.getElementById('inspector-color-badge').textContent = item.colorName;
+      document.getElementById('inspector-motif-short').innerHTML = `<i class="fa-solid ${item.icon} mr-1.5"></i>${item.motifShort}`;
+      document.getElementById('inspector-malay').textContent = item.malay;
+      document.getElementById('inspector-english').textContent = item.english;
+      document.getElementById('inspector-food').textContent = item.food;
+      document.getElementById('inspector-culture').textContent = item.culture;
+
+      const visualBox = document.getElementById('inspector-visual');
+      visualBox.className = `w-full max-w-sm h-44 rounded-2xl p-6 flex flex-col justify-between shadow-2xl border-2 border-white/30 ${item.bgClass} relative overflow-hidden transition-colors duration-300`;
+      document.getElementById('inspector-bg-icon').className = `fa-solid ${item.icon} banknote-watermark`;
+
+      speakMalay(item.malay);
+    }
+
+    function speakCurrentCurrency() {
+      speakMalay(selectedCurrencyObj.malay);
+    }
+
+    // =========================================================================
+    // 5. MODULE 2: NUMBER-TO-MALAY CONVERTER & CASH BREAKDOWN
+    // =========================================================================
+    function numberToMalayWords(n) {
+      n = Math.floor(n);
+      if (n === 0) return 'kosong';
+      const units = ['', 'satu', 'dua', 'tiga', 'empat', 'lima', 'enam', 'tujuh', 'lapan', 'sembilan'];
+
+      if (n < 10) return units[n];
+      if (n === 10) return 'sepuluh';
+      if (n === 11) return 'sebelas';
+      if (n < 20) return units[n - 10] + ' belas';
+      if (n < 100) {
+        const tens = Math.floor(n / 10);
+        const rem = n % 10;
+        return units[tens] + ' puluh' + (rem > 0 ? ' ' + units[rem] : '');
+      }
+      if (n < 1000) {
+        const hundreds = Math.floor(n / 100);
+        const rem = n % 100;
+        const prefix = hundreds === 1 ? 'seratus' : units[hundreds] + ' ratus';
+        return prefix + (rem > 0 ? ' ' + numberToMalayWords(rem) : '');
+      }
+      return n.toString();
+    }
+
+    function formatPriceToMalay(amount) {
+      // Round to nearest 0.05
+      const rounded = Math.round(amount * 20) / 20;
+      const ringgit = Math.floor(rounded);
+      const sen = Math.round((rounded - ringgit) * 100);
+
+      let parts = [];
+      if (ringgit > 0) {
+        parts.push(numberToMalayWords(ringgit) + ' ringgit');
+      }
+      if (sen > 0) {
+        parts.push(numberToMalayWords(sen) + ' sen');
+      }
+      if (parts.length === 0) return 'Kosong ringgit';
+
+      const full = parts.join(' ');
+      return full.charAt(0).toUpperCase() + full.slice(1);
+    }
+
+    function setPresetPrice(val) {
+      document.getElementById('price-input').value = val.toFixed(2);
+      updatePriceConverter();
+      speakConvertedPrice();
+    }
+
+    function updatePriceConverter() {
+      const inputEl = document.getElementById('price-input');
+      let val = parseFloat(inputEl.value);
+      if (isNaN(val) || val < 0) val = 0;
+      if (val > 999.95) val = 999.95;
+
+      // Round to nearest 5 sen
+      const rounded = Math.round(val * 20) / 20;
+      const malayPhrase = formatPriceToMalay(rounded);
+
+      document.getElementById('converted-malay-text').textContent = malayPhrase;
+      document.getElementById('breakdown-amount-label').textContent = 'RM ' + rounded.toFixed(2);
+
+      // Casual phrasing hint
+      const ringgit = Math.floor(rounded);
+      const sen = Math.round((rounded - ringgit) * 100);
+      let casualHint = '';
+      if (sen === 50 && ringgit > 0) {
+        casualHint = `Casual at stall: "${numberToMalayWords(ringgit)} ringgit setengah" or "${numberToMalayWords(ringgit)} lima puluh"`;
+      } else if (sen === 0 && ringgit > 0) {
+        casualHint = `Casual at stall: "${numberToMalayWords(ringgit)} ringgit saja"`;
+      } else {
+        casualHint = `Rounded to nearest 5 sen: RM ${rounded.toFixed(2)}`;
+      }
+      document.getElementById('converted-casual-text').textContent = casualHint;
+
+      // Calculate exact minimum denominations
+      let remainingSen = Math.round(rounded * 100);
+      const denominations = [
+        { label: 'RM 100', sen: 10000, type: 'note', bg: 'bg-purple-700 text-white' },
+        { label: 'RM 50', sen: 5000, type: 'note', bg: 'bg-teal-700 text-white' },
+        { label: 'RM 20', sen: 2000, type: 'note', bg: 'bg-amber-600 text-white' },
+        { label: 'RM 10', sen: 1000, type: 'note', bg: 'bg-rose-600 text-white' },
+        { label: 'RM 5', sen: 500, type: 'note', bg: 'bg-emerald-600 text-white' },
+        { label: 'RM 1', sen: 100, type: 'note', bg: 'bg-sky-600 text-white' },
+        { label: '50 sen', sen: 50, type: 'coin', bg: 'coin-gold text-amber-950' },
+        { label: '20 sen', sen: 20, type: 'coin', bg: 'coin-gold text-amber-950' },
+        { label: '10 sen', sen: 10, type: 'coin', bg: 'coin-silver text-slate-900' },
+        { label: '5 sen', sen: 5, type: 'coin', bg: 'coin-silver text-slate-900' }
+      ];
+
+      const container = document.getElementById('cash-breakdown-visual');
+      container.innerHTML = '';
+      let pieceCount = 0;
+
+      denominations.forEach(d => {
+        const count = Math.floor(remainingSen / d.sen);
+        if (count > 0) {
+          remainingSen -= count * d.sen;
+          for (let i = 0; i < count; i++) {
+            pieceCount++;
+            const badge = document.createElement('div');
+            if (d.type === 'note') {
+              badge.className = `${d.bg} px-4 py-3 rounded-xl font-extrabold text-sm shadow border border-white/30 flex items-center gap-2`;
+              badge.innerHTML = `<i class="fa-solid fa-money-bill-wave opacity-80"></i><span>${d.label}</span>`;
+            } else {
+              badge.className = `${d.bg} w-14 h-14 rounded-full font-extrabold text-xs flex items-center justify-center border-2 border-white/70`;
+              badge.textContent = d.label;
+            }
+            container.appendChild(badge);
+          }
+        }
+      });
+
+      if (pieceCount === 0) {
+        container.innerHTML = '<span class="text-sm text-kopitiam-muted italic">Masukkan harga lebih daripada RM 0.00</span>';
+      }
+      document.getElementById('total-pieces-badge').textContent = `${pieceCount} keping / syiling`;
+    }
+
+    function speakConvertedPrice() {
+      const text = document.getElementById('converted-malay-text').textContent;
+      speakMalay(text);
+    }
+
+    // =========================================================================
+    // 6. MODULE 3: INTERACTIVE KEDAI & PASAR MALAM SIMULATOR
+    // =========================================================================
+    let currentVenue = 'kafe';
+    let currentScenario = null;
+    let simScore = 0;
+    let simStreak = 0;
+    let selectedCashTotal = 0;
+    let showEnglish = false;
+    let scenarioIndexMap = { kafe: 0, mamak: 0, restoran: 0, pasar: 0 };
+
+    function setSimulatorVenue(venue) {
+      currentVenue = venue;
+      document.querySelectorAll('.venue-btn').forEach(btn => {
+        btn.classList.remove('border-kopitiam-teal', 'bg-kopitiam-teal', 'text-white', 'shadow');
+        btn.classList.add('border-stone-200', 'bg-white', 'text-kopitiam-charcoal');
+      });
+      const active = document.getElementById('venue-btn-' + venue);
+      active.classList.remove('border-stone-200', 'bg-white', 'text-kopitiam-charcoal');
+      active.classList.add('border-kopitiam-teal', 'bg-kopitiam-teal', 'text-white', 'shadow');
+
+      generateSimulatorRound();
+    }
+
+    function toggleEnglishHint() {
+      showEnglish = !showEnglish;
+      const enEl = document.getElementById('sim-dialogue-en');
+      const label = document.getElementById('hint-toggle-label');
+      if (showEnglish) {
+        enEl.classList.remove('hidden');
+        label.textContent = 'Sembunyi Terjemahan (Hide English)';
+      } else {
+        enEl.classList.add('hidden');
+        label.textContent = 'Tunjuk Terjemahan (English Hint)';
+      }
+    }
+
+    function generateSimulatorRound() {
+      const list = VENUE_SCENARIOS[currentVenue];
+      const idx = scenarioIndexMap[currentVenue] % list.length;
+      scenarioIndexMap[currentVenue]++;
+      currentScenario = list[idx];
+
+      // Calculate exact total
+      let total = 0;
+      currentScenario.items.forEach(it => {
+        total += it.qty * it.price;
+      });
+      currentScenario.exactTotal = Math.round(total * 20) / 20;
+
+      // Update UI labels
+      const venueNames = {
+        kafe: 'Suasana: Kafe Kampus',
+        mamak: 'Suasana: Restoran Mamak',
+        restoran: 'Suasana: Restoran',
+        pasar: 'Suasana: Pasar Malam'
+      };
+      document.getElementById('sim-venue-badge').textContent = venueNames[currentVenue];
+      document.getElementById('sim-vendor-role').textContent = currentScenario.role + ':';
+      document.getElementById('sim-dialogue-ms').textContent = `"${currentScenario.dialogueMs}"`;
+      document.getElementById('sim-dialogue-en').textContent = `"${currentScenario.dialogueEn}"`;
+
+      // Render Order Items
+      const orderContainer = document.getElementById('sim-order-items');
+      orderContainer.innerHTML = '';
+      currentScenario.items.forEach(it => {
+        const row = document.createElement('div');
+        row.className = 'flex items-center justify-between text-sm bg-white px-3.5 py-2.5 rounded-xl border border-stone-200/80';
+        row.innerHTML = `
+          <div>
+            <span class="font-bold text-kopitiam-charcoal">${it.qty}x ${it.name}</span>
+            <span class="block text-xs text-kopitiam-muted">RM ${it.price.toFixed(2)} setiap satu</span>
+          </div>
+          <span class="font-extrabold text-kopitiam-teal">RM ${(it.qty * it.price).toFixed(2)}</span>
+        `;
+        orderContainer.appendChild(row);
+      });
+
+      // Reset Step 1 & Step 2 states
+      document.getElementById('sim-total-input').value = '';
+      document.getElementById('sim-step1-feedback').classList.add('hidden');
+      document.getElementById('sim-step2-feedback').classList.add('hidden');
+
+      const step2 = document.getElementById('sim-step-2');
+      step2.classList.add('opacity-50', 'pointer-events-none');
+
+      selectedCashTotal = 0;
+      document.getElementById('sim-selected-cash').textContent = 'RM 0.00';
+      document.getElementById('sim-change-input').value = '';
+
+      if (currentScenario.mode === 'exact') {
+        document.getElementById('sim-step2-title').textContent = 'Bayar Wang Tepat (Pay Exact Amount)';
+        document.getElementById('sim-step2-instruction').textContent = 'Click the Ringgit notes and coins below to pay the exact bill!';
+        document.getElementById('sim-wallet-mode').classList.remove('hidden');
+        document.getElementById('sim-change-mode').classList.add('hidden');
+      } else {
+        document.getElementById('sim-step2-title').textContent = 'Kira Baki Wang (Calculate Change)';
+        document.getElementById('sim-step2-instruction').textContent = 'You paid with a large note. Calculate how much change the seller must return!';
+        document.getElementById('sim-wallet-mode').classList.add('hidden');
+        document.getElementById('sim-change-mode').classList.remove('hidden');
+        document.getElementById('sim-paid-note-label').textContent = `RM ${currentScenario.paidNote.toFixed(2)}`;
+      }
+    }
+
+    function speakSimulatorDialogue() {
+      if (currentScenario) {
+        speakMalay(currentScenario.dialogueMs);
+      }
+    }
+
+    function checkStep1Total() {
+      const userVal = parseFloat(document.getElementById('sim-total-input').value);
+      const fb = document.getElementById('sim-step1-feedback');
+      fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-rose-100', 'text-rose-900');
+
+      if (!isNaN(userVal) && Math.abs(userVal - currentScenario.exactTotal) < 0.02) {
+        const malayPrice = formatPriceToMalay(currentScenario.exactTotal);
+        fb.classList.add('bg-emerald-100', 'text-emerald-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5"></i>Betul! Jumlahnya <strong>RM ${currentScenario.exactTotal.toFixed(2)}</strong> (<em>"${malayPrice}"</em>). Teruskan ke Langkah 2!`;
+        speakMalay('Betul! ' + malayPrice);
+
+        // Unlock Step 2
+        const step2 = document.getElementById('sim-step-2');
+        step2.classList.remove('opacity-50', 'pointer-events-none');
+      } else {
+        fb.classList.add('bg-rose-100', 'text-rose-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1.5"></i>Cuba lagi! Kira semula harga setiap item di atas.`;
+        simStreak = 0;
+        updateSimScoreboard();
+      }
+    }
+
+    function addSimCash(amount) {
+      selectedCashTotal = Math.round((selectedCashTotal + amount) * 100) / 100;
+      document.getElementById('sim-selected-cash').textContent = 'RM ' + selectedCashTotal.toFixed(2);
+    }
+
+    function resetSelectedCash() {
+      selectedCashTotal = 0;
+      document.getElementById('sim-selected-cash').textContent = 'RM 0.00';
+      document.getElementById('sim-step2-feedback').classList.add('hidden');
+    }
+
+    function checkStep2Payment() {
+      const fb = document.getElementById('sim-step2-feedback');
+      fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-rose-100', 'text-rose-900');
+
+      if (Math.abs(selectedCashTotal - currentScenario.exactTotal) < 0.02) {
+        simScore += 10;
+        simStreak += 1;
+        updateSimScoreboard();
+        fb.classList.add('bg-emerald-100', 'text-emerald-900');
+        fb.innerHTML = `<i class="fa-solid fa-award mr-1.5"></i>Syabas! Bayaran tepat diterima. Penjual berkata: <em>"Terima kasih, jumpa lagi!"</em> (+10 markah)`;
+        speakMalay('Syabas! Terima kasih, jumpa lagi!');
+      } else if (selectedCashTotal > currentScenario.exactTotal) {
+        const diff = (selectedCashTotal - currentScenario.exactTotal).toFixed(2);
+        fb.classList.add('bg-rose-100', 'text-rose-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-1.5"></i>Wang terlebih RM ${diff}! Tekan <strong>Reset</strong> dan pilih jumlah tepat RM ${currentScenario.exactTotal.toFixed(2)}.`;
+      } else {
+        const diff = (currentScenario.exactTotal - selectedCashTotal).toFixed(2);
+        fb.classList.add('bg-rose-100', 'text-rose-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-1.5"></i>Wang tak cukup lagi RM ${diff}! Tambah lagi syiling atau wang kertas.`;
+      }
+    }
+
+    function checkStep2Change() {
+      const userChange = parseFloat(document.getElementById('sim-change-input').value);
+      const expectedChange = Math.round((currentScenario.paidNote - currentScenario.exactTotal) * 20) / 20;
+      const fb = document.getElementById('sim-step2-feedback');
+      fb.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-900', 'bg-rose-100', 'text-rose-900');
+
+      if (!isNaN(userChange) && Math.abs(userChange - expectedChange) < 0.02) {
+        simScore += 10;
+        simStreak += 1;
+        updateSimScoreboard();
+        const malayChange = formatPriceToMalay(expectedChange);
+        fb.classList.add('bg-emerald-100', 'text-emerald-900');
+        fb.innerHTML = `<i class="fa-solid fa-award mr-1.5"></i>Pandai! Baki anda ialah <strong>RM ${expectedChange.toFixed(2)}</strong> (<em>"${malayChange}"</em>). (+10 markah)`;
+        speakMalay('Pandai! Baki anda ialah ' + malayChange);
+      } else {
+        simStreak = 0;
+        updateSimScoreboard();
+        fb.classList.add('bg-rose-100', 'text-rose-900');
+        fb.innerHTML = `<i class="fa-solid fa-circle-xmark mr-1.5"></i>Kurang tepat! Tolak RM ${currentScenario.exactTotal.toFixed(2)} daripada RM ${currentScenario.paidNote.toFixed(2)}.`;
+      }
+    }
+
+    function updateSimScoreboard() {
+      document.getElementById('sim-score').textContent = simScore;
+      document.getElementById('sim-streak').textContent = simStreak + ' 🔥';
+    }
+
+    // =========================================================================
+    // 7. MODULE 4: INTERACTIVE PHRASEBOOK FLASHCARDS
+    // =========================================================================
+    function renderPhrasebook(filterCat = 'all') {
+      const grid = document.getElementById('phrasebook-grid');
+      grid.innerHTML = '';
+
+      const filtered = filterCat === 'all'
+        ? PHRASEBOOK_DATA
+        : PHRASEBOOK_DATA.filter(p => p.category === filterCat);
+
+      filtered.forEach(item => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'perspective-1000 h-60 cursor-pointer';
+        wrapper.onclick = function (e) {
+          // Do not flip if user clicked the speak button
+          if (e.target.closest('.speak-phrase-btn')) return;
+          this.classList.toggle('flipped');
+        };
+
+        wrapper.innerHTML = `
+          <div class="flip-inner relative w-full h-full">
+            <!-- FRONT: Bahasa Melayu -->
+            <div class="flip-front absolute inset-0 bg-white rounded-3xl p-6 shadow-md border-2 border-stone-200 hover:border-kopitiam-turmeric flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-kopitiam-warm text-kopitiam-teal">
+                  ${item.tag}
+                </span>
+                <button type="button" onclick="speakMalay('${item.natural.replace(/'/g, "\\'")}')"
+                  class="speak-phrase-btn w-10 h-10 rounded-xl bg-kopitiam-teal hover:bg-kopitiam-tealDark text-white flex items-center justify-center shadow transition">
+                  <i class="fa-solid fa-volume-high"></i>
+                </button>
+              </div>
+
+              <div>
+                <p class="text-xs font-semibold text-kopitiam-muted">Frasa Asas:</p>
+                <h3 class="font-serif text-xl font-bold text-kopitiam-charcoal mt-0.5">${item.malay}</h3>
+                <div class="mt-3 pt-2.5 border-t border-stone-100">
+                  <p class="text-[11px] font-bold uppercase text-kopitiam-hibiscus">Gaya Semula Jadi (Natural):</p>
+                  <p class="text-sm font-bold text-kopitiam-teal mt-0.5">"${item.natural}"</p>
+                </div>
+              </div>
+
+              <p class="text-[11px] text-kopitiam-muted text-right">
+                <i class="fa-solid fa-rotate mr-1"></i>Klik untuk maksud (English)
+              </p>
+            </div>
+
+            <!-- BACK: English Meaning & Cultural Tip -->
+            <div class="flip-back absolute inset-0 bg-kopitiam-teal text-white rounded-3xl p-6 shadow-md border-2 border-kopitiam-turmeric flex flex-col justify-between">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-kopitiam-turmeric">
+                  Maksud &amp; Tip Budaya
+                </span>
+                <button type="button" onclick="speakMalay('${item.natural.replace(/'/g, "\\'")}')"
+                  class="speak-phrase-btn w-9 h-9 rounded-xl bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition">
+                  <i class="fa-solid fa-volume-high text-sm"></i>
+                </button>
+              </div>
+
+              <div>
+                <p class="text-base font-bold text-white leading-snug">
+                  ${item.english}
+                </p>
+                <div class="mt-3 bg-white/10 rounded-xl p-3 text-xs text-stone-200 leading-relaxed">
+                  <i class="fa-solid fa-lightbulb text-kopitiam-turmeric mr-1"></i>
+                  ${item.tip}
+                </div>
+              </div>
+
+              <p class="text-[11px] text-kopitiam-turmeric text-right">
+                <i class="fa-solid fa-rotate mr-1"></i>Klik untuk kembali
+              </p>
+            </div>
+          </div>
+        `;
+        grid.appendChild(wrapper);
+      });
+    }
+
+    function filterPhrases(cat) {
+      document.querySelectorAll('.phrase-filter-btn').forEach(btn => {
+        btn.classList.remove('bg-kopitiam-teal', 'text-white');
+        btn.classList.add('bg-kopitiam-warm', 'text-kopitiam-charcoal');
+      });
+      event.target.classList.remove('bg-kopitiam-warm', 'text-kopitiam-charcoal');
+      event.target.classList.add('bg-kopitiam-teal', 'text-white');
+      renderPhrasebook(cat);
+    }
+
+    // =========================================================================
+    // 8. INITIALIZATION
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderCurrencyGrids();
+      updatePriceConverter();
+      generateSimulatorRound();
+      renderPhrasebook('all');
+    });
+  </script>
+</body>
+</html>
